@@ -1,126 +1,73 @@
-class Calculator {
-  constructor(previousOperandTextElement, currentOperandTextElement) {
-    this.previousOperandTextElement = previousOperandTextElement
-    this.currentOperandTextElement = currentOperandTextElement
-    this.clear()
-  }
+$(document).ready(function(){
+    $(window).scroll(function(){
+        // sticky navbar on scroll script
+        if(this.scrollY > 20){
+            $('.navbar').addClass("sticky");
+        }else{
+            $('.navbar').removeClass("sticky");
+        }
+        
+        // scroll-up button show/hide script
+        if(this.scrollY > 500){
+            $('.scroll-up-btn').addClass("show");
+        }else{
+            $('.scroll-up-btn').removeClass("show");
+        }
+    });
 
-  clear() {
-    this.currentOperand = ''
-    this.previousOperand = ''
-    this.operation = undefined
-  }
+    // slide-up script
+    $('.scroll-up-btn').click(function(){
+        $('html').animate({scrollTop: 0});
+        // removing smooth scroll on slide-up button click
+        $('html').css("scrollBehavior", "auto");
+    });
 
-  delete() {
-    this.currentOperand = this.currentOperand.toString().slice(0, -1)
-  }
+    $('.navbar .menu li a').click(function(){
+        // applying again smooth scroll on menu items click
+        $('html').css("scrollBehavior", "smooth");
+    });
 
-  appendNumber(number) {
-    if (number === '.' && this.currentOperand.includes('.')) return
-    this.currentOperand = this.currentOperand.toString() + number.toString()
-  }
+    // toggle menu/navbar script
+    $('.menu-btn').click(function(){
+        $('.navbar .menu').toggleClass("active");
+        $('.menu-btn i').toggleClass("active");
+    });
 
-  chooseOperation(operation) {
-    if (this.currentOperand === '') return
-    if (this.previousOperand !== '') {
-      this.compute()
-    }
-    this.operation = operation
-    this.previousOperand = this.currentOperand
-    this.currentOperand = ''
-  }
+    // typing text animation script
+    var typed = new Typed(".typing", {
+        strings: ["E-MART", "META-MART", "ONLINE SHOPING", "DEVELOPING", "PRAY FOR US","BAGOWAN,MUJIBNAGAR,MEHERPUR"],
+        typeSpeed: 100,
+        backSpeed: 60,
+        loop: true
+    });
 
-  compute() {
-    let computation
-    const prev = parseFloat(this.previousOperand)
-    const current = parseFloat(this.currentOperand)
-    if (isNaN(prev) || isNaN(current)) return
-    switch (this.operation) {
-      case '+':
-        computation = prev + current
-        break
-      case '-':
-        computation = prev - current
-        break
-      case '*':
-        computation = prev * current
-        break
-      case '÷':
-        computation = prev / current
-        break
-      default:
-        return
-    }
-    this.currentOperand = computation
-    this.operation = undefined
-    this.previousOperand = ''
-  }
+    var typed = new Typed(".typing-2", {
+        strings: ["We are from Bagowan,Mujibnagar,Meherpur", "Maybe 1st E-Commerce Platform in Mujibanagar", "Pls stay with us", "Pray for us", "Soon we'll start (Est date-10 OCT 2022"],
+        typeSpeed: 100,
+        backSpeed: 60,
+        loop: true
+    });
 
-  getDisplayNumber(number) {
-    const stringNumber = number.toString()
-    const integerDigits = parseFloat(stringNumber.split('.')[0])
-    const decimalDigits = stringNumber.split('.')[1]
-    let integerDisplay
-    if (isNaN(integerDigits)) {
-      integerDisplay = ''
-    } else {
-      integerDisplay = integerDigits.toLocaleString('en', { maximumFractionDigits: 0 })
-    }
-    if (decimalDigits != null) {
-      return `${integerDisplay}.${decimalDigits}`
-    } else {
-      return integerDisplay
-    }
-  }
-
-  updateDisplay() {
-    this.currentOperandTextElement.innerText =
-      this.getDisplayNumber(this.currentOperand)
-    if (this.operation != null) {
-      this.previousOperandTextElement.innerText =
-        `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`
-    } else {
-      this.previousOperandTextElement.innerText = ''
-    }
-  }
-}
-
-
-const numberButtons = document.querySelectorAll('[data-number]')
-const operationButtons = document.querySelectorAll('[data-operation]')
-const equalsButton = document.querySelector('[data-equals]')
-const deleteButton = document.querySelector('[data-delete]')
-const allClearButton = document.querySelector('[data-all-clear]')
-const previousOperandTextElement = document.querySelector('[data-previous-operand]')
-const currentOperandTextElement = document.querySelector('[data-current-operand]')
-
-const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement)
-
-numberButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    calculator.appendNumber(button.innerText)
-    calculator.updateDisplay()
-  })
-})
-
-operationButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    calculator.chooseOperation(button.innerText)
-    calculator.updateDisplay()
-  })
-})
-
-equalsButton.addEventListener('click', button => {
-  calculator.compute()
-  calculator.updateDisplay()
-})
-
-allClearButton.addEventListener('click', button => {
-  calculator.clear()
-  calculator.updateDisplay()
-})
-
-deleteButton.addEventListener('click', button => {
-  calculator.delete()
-  calculator.updateDisplay()
-})
+    // owl carousel script
+    $('.carousel').owlCarousel({
+        margin: 20,
+        loop: true,
+        autoplay: true,
+        autoplayTimeOut: 2000,
+        autoplayHoverPause: true,
+        responsive: {
+            0:{
+                items: 1,
+                nav: false
+            },
+            600:{
+                items: 2,
+                nav: false
+            },
+            1000:{
+                items: 3,
+                nav: false
+            }
+        }
+    });
+});
